@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Employee";
+}
+
+<h1>Employee List</h1>
+<div class="row">
+    <form class="navbar-form navbar-left" role="search" id="formSearch" action="@Url.Action("EmployeeGrid")">
+        <div class="form-group">
+            <input type="text" name="Name" id="Name" class="form-control" placeholder="Search">
+        </div>
+        <input type="hidden" name="PageNo" id="PageNo" />
+
+        <button type="button" onclick="Search()" class="btn btn-default">Submit</button>
+
+    </form>
+</div>
+
+<div class="row">@Html.ActionLink("Add", "AddEditEmployee")</div>
+
+
+
+<div id="grid">
+    @Html.Action("EmployeeGrid")
+</div>
+
+@section Scripts {
+    <script>
+
+        function Pager(pageNo) {
+            $("#PageNo").val(pageNo);
+            Search();
+        }
+        function Search() {
+            $form = $("#formSearch");
+            var url = $form.attr("action");
+            $.ajax({
+                url: url,
+                cache: false,
+                type: "POST",
+                data: $form.serialize(),
+                dataType: "html",
+                success: function (result) {
+                    $("#grid").html(result);
+                }
+            });
+        }
+
+    </script>
+}
+
+

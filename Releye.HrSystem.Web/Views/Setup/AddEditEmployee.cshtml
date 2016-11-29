@@ -1,0 +1,74 @@
+﻿@model Releye.HrSystem.Data.Entity.Employee
+@{
+    ViewBag.Title = "AddEditEmployee";
+}
+
+<h1>@(Model == null ? "Add Employee" : "Edit Employee")</h1>
+
+
+<form role="form" id="formAddEdit" action="@Url.Action("AddEditSave")">
+    <div class="form-group">
+        @Html.LabelFor(a => a.Name)
+        @Html.TextBoxFor(a => a.Name)
+        @Html.ValidationMessageFor(a => a.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.Salary)
+        @Html.TextBoxFor(a => a.Salary)
+        @Html.ValidationMessageFor(a => a.Salary)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.DateOfBirth)
+        @Html.TextBoxFor(a => a.DateOfBirth)
+        @Html.ValidationMessageFor(a => a.DateOfBirth)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(a => a.JoinDate)
+        @Html.TextBoxFor(a => a.JoinDate)
+        @Html.ValidationMessageFor(a => a.JoinDate)
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(a => a.GenderID)
+        @Html.DropDownListFor(a => a.GenderID, new SelectList(ViewBag.ListOfGenders, "ID", "Description"), "-Select Gender-")
+        @Html.ValidationMessageFor(a => a.GenderID)
+    </div>
+
+
+
+    @Html.HiddenFor(a => a.ID)
+    @Html.Hidden("Action", (string)ViewBag.ActionMode)
+    <button type="button" onclick="Save()" class="btn btn-default">Submit</button>
+</form>
+
+@section Scripts {
+
+
+
+    <script>
+
+    function Save() {
+       $form=$("#formAddEdit");
+       if ($form.valid()) {
+           var url = $form.attr("action");
+           $.ajax({
+               url: url,
+               cache: false,
+               type: "POST",
+               data: $form.serialize(),
+               dataType: "JSON",
+               success: function (result) {
+                   if (result.isSuccess) {
+                       alert("Save Successfully");
+                       window.location.href = '@Url.Action("Employee", "Setup")';
+                   } else {
+                       alert(result.Message);
+                   }
+               }
+           });
+       }
+    }
+    </script>
+
+}

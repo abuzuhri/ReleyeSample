@@ -1,0 +1,39 @@
+﻿@model GoTech.Framework.Pagination.PagedList<Releye.HrSystem.Data.Entity.Employee>
+@{
+    ViewBag.Title = "EmployeeGrid";
+    Layout = null;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>DateOfBirth</th>
+            <th>Salary</th>
+            <th>Gender</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var itm in Model)
+        {
+            <tr>
+                <td>@itm.Name</td>
+                <td>@itm.DateOfBirth.ToShortDateString()</td>
+                <td>@itm.Salary</td>
+                <td>@itm.Gender.Description</td>
+                <td>
+                    @Html.ActionLink("Edit", "AddEditEmployee", new { ID = itm.ID }) |
+                    @Html.ActionLink("Delete", "EmployeeDelete", new { ID = itm.ID }, new { onclick = "return confirm('Are you sure?');" })
+                </td>
+            </tr>
+        }
+
+
+
+
+    </tbody>
+</table>
+
+@(new MvcHtmlString(Model.pagingInfo.PageLinks))
